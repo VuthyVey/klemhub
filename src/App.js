@@ -1,24 +1,115 @@
+import React, {useState, useEffect} from 'react';
 import logo from './logo.svg';
+import {FormattedMessage} from "react-intl";
 import './App.css';
 
+import { I18nPropvider, LOCALES } from './i18nProvider';
+import translate from "./i18nProvider/translate";
+import Input from './input';
+
 function App() {
+  const [currentTime, setCurrentTime] = useState(0);
+  const [locale, setLocale] = useState(LOCALES.ENGLISH);
+
+  useEffect(() => {
+    fetch('/time').then(res => res.json()).then(data => {
+      setCurrentTime(data.time);
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
+    <div>
+    <div data-collapse="medium" data-animation="over-right" data-duration="400" role="banner" className="topnav w-nav">
+    <div className="navcontainer">
+        <a href="#" className="navbutton hide w-inline-block">
+            <img
+                src="https://uploads-ssl.webflow.com/5f8dfd84d751ba4b176eac9e/5f946b1beefd7d8cec92de49_backarrow.png"
+                loading="lazy" width="42" alt=""/>
+            </a>
+        <a href="/" aria-current="page" className="w-inline-block w--current">
+            <img
+                src="https://uploads-ssl.webflow.com/5f8dfd84d751ba4b176eac9e/5f8dfe9670ebe498ee6de57a_klem.png"
+                loading="lazy" width="113" alt="" className="logo"/>
         </a>
-      </header>
+        <nav role="navigation" className="nav-menu w-nav-menu">
+            <div className="div-block-5">
+                <div className="text-block-83">Welcome</div><img
+                    src="https://uploads-ssl.webflow.com/5f8dfd84d751ba4b176eac9e/5f8dfe9670ebe44ba96de57c_workspace.jpg"
+                    loading="lazy" width="64" height="64" alt="" className="navlinkimage"/>
+            </div><a href="#" className="navlink w-nav-link">Home</a><a href="#" className="navlink w-nav-link">Discover</a><a
+                href="#" className="navlink w-nav-link">About Us</a><a href="#" className="navmainlink w-button">LOGIN</a>
+        </nav>
     </div>
+    <div className="w-nav-overlay" data-wf-ignore="" id="w-nav-overlay-0"></div>
+</div>
+<div className="margint60 blue bigpadding">
+    <div className="_10container">
+        <div className="heading-grid">
+            <div className="still">
+                <h1 className="homepagetitle">Bring the World to Your class room</h1>
+                <div className="text-block-110"><strong className="home-page-subtitle">Your gateway to the very best in Project
+                        Based Learning. Find a growing set of resources here to empower your classrooms</strong></div>
+                <form action="/search" className="search w-form"><input type="search" className="search-input w-input"
+                        autofocus="true" maxlength="256" name="query" placeholder="Search Projects…" id="search"
+                        required=""/><input type="submit" value="Search" className="search-button w-button"/></form>
+            </div>
+            <div id="w-node-e4328cdc-b9a1-a18f-6f54-d4b8f7f80cc4-0ebb9283" className="heading-image-container">
+                <div className="heading-image-wrapper"><img
+                        src="https://uploads-ssl.webflow.com/5f8dfd84d751ba4b176eac9e/5f98576546308bba28502fd3_5f685a109fe5f00d69089413_IMG20200726145519-01.jpeg"
+                        loading="lazy" alt="" className="heading-image"/><img
+                        src="https://uploads-ssl.webflow.com/5f8dfd84d751ba4b176eac9e/5f9876287421765bfaa5cd3a_IMG_20200726_143807-01-min.jpeg"
+                        loading="lazy" alt="" className="heading-image-2"/></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<I18nPropvider locale={locale}>
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1>
+            <FormattedMessage id="hello" />
+          </h1>
+          <h2>
+            Not translated part. {translate('hello')}
+          </h2>
+          <p>
+            {translate('edit-file', {file: <code>src/App.js</code>})}
+            <hr/>
+            Edit <code>src/App.js</code> and save to reload.
+          </p>
+
+
+          <div className='THIS sample does not work'>
+            <input type="text" placeholder={translate('demo-placeholder')} />
+            <input type="text" placeholder={<FormattedMessage id="demo-placeholder" />} />
+          </div>
+
+          <Input />
+          <FormattedMessage id="demo-placeholder" defaultMessage="search">
+            {placeholder=>
+                <input placeholder={placeholder}/>
+            }
+          </FormattedMessage>
+          <a
+            className="App-link"
+            href="https://reactjs.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn React
+          </a>
+
+          <hr/>
+
+          <button onClick={() => setLocale(LOCALES.ENGLISH)}>English</button>
+          <button onClick={() => setLocale(LOCALES.FRENCH)}>French</button>
+          <button onClick={() => setLocale(LOCALES.GERMAN)}>German</button>
+        </header>
+      </div>
+    </I18nPropvider>
+</div>
   );
 }
 
