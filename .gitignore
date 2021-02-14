@@ -24,3 +24,5 @@ client/yarn-error.log*
 
 venv
 __pycache__
+
+.flaskenv
